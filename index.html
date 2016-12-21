@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<head>
+    <title>Ufohavainnot</title>
+    <link rel="stylesheet" href="style/style.css" type="text/css" media="screen" />
+	<meta charset="UTF-8">
+	<link href="https://fonts.googleapis.com/css?family=Orbitron" rel="stylesheet">
+</head>
+<style>
+div.tooltip {	
+    position: absolute;			
+    text-align: left;			
+    width: 300px;					
+    height: 280px;					
+    padding: 5px;				
+    font: 12px sans-serif;		
+    background: white;	
+    border: 0px;		
+    border-radius: 8px;			
+    pointer-events: none;			
+}
+
+img{
+    width:100%;
+    max-width:250px;
+    height: 100%;
+    max-height: 200px; 
+}
+
+* {
+	font-family: 'Orbitron', sans-serif;
+}
+
+</style>
+<body>
+	<button id="pelko">Pelko</button>
+	<button id="psyykkinen">Psyykkisiä</button>
+	<button id="loisto">Loistiko valoa?</button>
+	<button id="ilmoitus">Ilmoititko lehtiin / viranomaisille?</button>
+	<button id="elaimet">Vaikutus eläimiin</button>
+	<button id="sahko">Sähköhäiriöitä</button>
+	<button id="clear">Clear</button>
+	<div id="chart"></div>
+<script src="http://d3js.org/d3.v4.min.js"></script>
+<body>
+<script>
+
+var datasee;
+var forceStrength = 1;
+var parseDate = d3.timeParse("%Y-%m-%d");
+var noColor = "#BE3AF9"
+var yesColor = "#21F893"
+
+
+// Margins
+//
+var margin = {top: 50, right: 70, bottom: 50, left: 50},
+    width = 900 - margin.left - margin.right,
+    height = 4000 - margin.top - margin.bottom;
+
+var svg = d3.select("#chart")
+	.append("svg")
+	.attr("height", height)
+	.attr("width", width)
+	.append("g")
+	.attr("transform", "translate(40,40)")
+
+d3.selectAll("svg")
+	.style("background", "black")
+
+var x = d3.scaleLinear()
+    .rangeRound([100, width-margin.right])
+
+var y = d3.scaleLinear()
+    .rangeRound([height, 50])
+
+// Define the div for the tooltip
+var div = d3.select("body").append("div")	
+    .attr("class", "tooltip")				
+    .style("opacity", 0);
+
+//Change color based yes/no
+
+var psyykkinen = function(d) {
+	if(d["Aiheuttiko kohde psyykkisiä vaikutuksia"] === "ei") {
+		return noColor
+	} else {
+		return yesColor
+	}
+}
+
+var pelko = function(d) {
+	if(d["Aiheuttiko kohde pelkoa"] === "ei") {
+		return noColor
+	} else {
+		return yesColor
+	}
+}
+
+var loisto = function(d) {
+	if(d["Loistiko kohde valoa"] === "ei") {
+		return noColor
+	} else {
+		return yesColor
+	}
+}
+
+var ilmoitus = function(d) {
+	if(d["Ilmoitko havainnostasi sanomalehdille tai viranomaisille"] === "ei") {
+		return noColor
+	} else {
+		return yesColor
+	}
+}
+
+var elaimet = function(d) {
+	if(d["Oliko kohteella vaikutusta eläimiin"] === "ei") {
+		return noColor
+	} else {
+		return yesColor
+	}
+}
+
+var sahko = function(d) {
+	if(d["Oliko kohteella vaikutusta eläimiin"] === "ei") {
+		return noColor
+	} else {
+		return yesColor
+	}
+}
+
+var clear = function(d) {
+	return yesColor;
+}
+
+//Decide if gaussian
+
+var gaussian = function(d) {
+	if (d["Kohteen ääriviivat"] === "selkeät") {
+	} else {
+		return "url(#blur)"
+	}
+	};
+
+//Decide circle color based on Valoisuus
+
+var fillColor = function(d) { 
+	if(d["Valoisuus"] === "pimeä") {
+		return "#21F893"; 
+	} else if(d["Valoisuus"] === "hämärä") {
+		return "gray";
+	} else if(d["Valoisuus"] === "auringonlasku_tai_nousu"){
+		return "orange";
+	} else {
+		return "lightgray"
+	}
+	}
+
+// Make different forces for different questions,
+
+var year = d3.forceY(function(d) {
+	if (d.year >= 2000) {
+		return y(d.year)*2;
+	} else {
+		return 1230;
+	} 
+	}
+	).strength(forceStrength);
+
+var month = d3.forceX(function(d) {
+	return x(d.month)
+	}).strength(forceStrength);
+
+var simulation = d3.forceSimulation()
+	.force("x", month)
+	.force("y", year)
+	.force("collide", d3.forceCollide(6))
+
+//Defs for gaussian blur
+
+var defs = svg.append("defs")
+
+d3.queue()
+	.defer(d3.tsv, "ufotietokanta19122016.tsv")
+	.await(ready)
+
+function ready (error, data) {
+
+	data.forEach(function(d) { 
+		d.pvm = parseDate(d["Päivämäärä"]),
+		d.paikka = d["Kunta tai kaupunki"];
+		d.year = d.pvm.getFullYear();
+		d.month = d.pvm.getMonth();
+	})
+
+	console.log(data)
+
+	x.domain([0,11]);
+	y.domain([1900, 2016]);
+
+var filter = svg.append("defs")
+	.append("filter")
+	.attr("id", "blur")
+	.append("feGaussianBlur")
+	.attr("stdDeviation", 1);
+
+
+
+	var circles = svg.selectAll(".havainnot")
+		.data(data)
+		.enter().append("circle")
+		.filter(function(d) { return d["havaintokuvat"] === "Kyllä"})
+		.attr("class", "havainnot")
+		.attr("r", 5)
+		.attr("fill", "#21F893")
+		.attr("filter", gaussian)
+		 .on("mouseover", function(d) {		
+            div.transition()		
+                .duration(200)		
+                .style("opacity", .99);		
+            div	.html( "<strong> Kunta tai kaupunki: </strong>"+ d["Kunta tai kaupunki"] + "<br /><strong>Päivämäärä:</strong> " + d["Päivämäärä"] + "<br /> <img src=" + d["kuva1"] + ">")	
+                .style("left", (d3.event.pageX) + "px")		
+                .style("top", (d3.event.pageY - 28) + "px");	
+            })					
+        .on("mouseout", function(d) {		
+            div.transition()		
+                .duration(500)		
+                .style("opacity", 0);	
+        })
+        .on("dblclick", dblclick);
+
+    var xText = svg.selectAll("x text")
+    	.data(data)
+    	.enter().append("text")
+    	.attr("x", 5)
+    	.attr("y", function(d) { return (y(d.year)*2)+7; })
+    	.attr("font-family", "sans-serif")
+    	.attr("font-size", "20px")
+    	.attr("text-anchor", "right")
+    	.attr("fill", "white")
+    	.text(function(d) { 	
+		if (d.year >= 2000) {
+			return d.year;
+		} else if (d.year == 1999) {
+			return "-1999";
+		} else if (d.year < 1999){
+			return ;
+		}
+		})
+
+
+    var yText = svg.selectAll("y text")
+    	.data(data)
+    	.enter().append("text")
+    	.attr("x", function(d) { return x(d.month); })
+    	.attr("y", 25)
+    	.attr("text-anchor", "middle")
+    	.attr("font-family", "sans-serif")
+    	.attr("font-size", "20px")
+    	.attr("fill", "white")
+    	.attr("font-weight", "100")
+    	.text(function(d) { return d.month +1; })
+
+
+	simulation.nodes(data)
+		.on("tick", ticked)
+
+	circles.on("click", function(d) {
+		console.log(d);
+	})
+
+
+
+	d3.select("#pelko").on("click", function() {
+		circles.attr("fill", pelko)
+		})
+
+	d3.select("#psyykkinen").on("click", function() {
+		circles.attr("fill", psyykkinen)
+		})
+
+	d3.select("#loisto").on("click", function() {
+		circles.attr("fill", loisto)
+		})
+
+	d3.select("#ilmoitus").on("click", function() {
+		circles.attr("fill", ilmoitus)
+		})
+
+	d3.select("#elaimet").on("click", function() {
+		circles.attr("fill", elaimet)
+		})
+
+	d3.select("#sahko").on("click", function() {
+		circles.attr("fill", sahko)
+		})
+
+	d3.select("#clear").on("click", function() {
+		circles.attr("fill", clear)
+		})
+
+	datasee = data;
+
+
+	function ticked() {
+		circles
+			.attr("cx", function(d) {
+				return d.x;
+			})
+			.attr("cy", function(d) {
+				return d.y;
+			})
+	}
+
+	function dblclick(a){
+    	window.open(a.URL, '_blank');
+ 	}
+
+	}
+
+</script>
+</body>
