@@ -5,406 +5,71 @@
 	<link href="https://fonts.googleapis.com/css?family=Orbitron" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css?family=Space+Mono" rel="stylesheet">
+	<link rel="stylesheet" href="style/style.css">
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.4.0/d3.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
 </head>
 <style>
 
-body {
-	width: 800px;
-	background-color: black;
-}
-
-h1 {
-	font-family: 'Orbitron', sans-serif;
-	color: white;
-
-}
-
-h3 {
-	font-family: 'Open Sans', sans-serif;
-}
-
-h4 {
-	font-family: 'Orbitron', sans-serif;
-	vertical-align : middle;
-    text-align: center;
-    color:black;
-}
-
-p {
-	font-family: 'Space Mono', sans-serif;
-	color: white;
-}
-
-img {
-	display: block;
-	margin: auto;
-}
-
-div.tooltip {	
-    position: absolute;			
-    text-align: left;			
-    width: 300px;					
-    height: 280px;					
-    padding: 5px;				
-    font: 12px sans-serif;		
-    background: white;	
-    border: 0px;		
-    border-radius: 8px;			
-    pointer-events: none;			
-}
-
-#title  {
-	margin: auto;
-    height: 50px;     
-    left: 50px;     
-    top: 50px;     
-    width: 100%;    
-    background-color:black;     
-}
-
-#title h1 {
-    margin-top: 20px;
-    vertical-align : middle;
-    text-align: center;
-	color: #90f4fd;
-    text-shadow:  0 0 10px #90f4fd, 0 0 5px #90f4fd;
-}
-
-
-#help {
-	margin: 0 auto;
-    height: 100%;     
-    left: 25%;     
-    top: 25%;     
-    width: 25%;    
-    background-color:white;     
-    opacity: 0.9;
-}
-
-.box:hover {
-	box-shadow:  0 0 10px #90f4fd, 0 0 5px #90f4fd;
-}
-
-#help p {
-    margin: 30px 10px 10px 10px;
-    padding: 5px 0px 5px 0;
-    vertical-align : middle;
-    text-align: center;
-	font-family: 'Orbitron', sans-serif;
-	color: black;
-}
-
-#introduction p {
-    margin: 0px 10px 10px 10px;
-    vertical-align : middle;
-    text-align: center;
-	color: white;
-}
-
-#samerow {
-	display: flex;
-	display: -webkit-flex; /* Safari 8 */
-	flex-wrap: wrap;
-    -webkit-flex-wrap: wrap;         /* Safari 8 */
-  	justify-content: center;
-    -webkit-justify-content: center;       /* Safari 8 */
-}
-
-#numeronosto {
-	margin: 10px;
-	width: 175px;
-	height: 150px; 
-    background-color:#21F893;     
-    opacity: 0.9;
-}
-
-#numeronosto p {
-    margin-top: 20px;
-    padding-bottom: 10px;
-    vertical-align : middle;
-    text-align: center;
-   	color: black;
-}
-
-
-#esim1 {
-	margin: 10px;
-	width: 350px;
-	height: 100%;
-	padding-left: 10px;
-	padding-right: 10px;
-	opacity: 0.95;
-
-    color: black;
-    background-color: white;
-}
-
-#esim1 p {
-    vertical-align : middle;
-    text-align: center;
-    font-family: 'Space Mono', sans-serif;
-    font-size: 14px;
-   	color: black;
-}
-
-#esim1 img {
-    padding: 10px 0px 10px 0px;
-}
-
-#chart-wrapper h1 {
-	margin-left: 20px;
-}
-
-
-.button {
-	margin: 10px;
-	width: 100px;
-	height: 30px;
-	padding: 10px 10px 10px 10px;
-	font-family: 'Orbitron', sans-serif;
-    text-align: center;
-    vertical-align: middle;
-    font-size: 12px;
-    color: black;
-    background-color: white;
-}
-
-.button:hover {
-    background-color: #21F893;
-}
-
-.button:active {
-    background-color: #059451;
-}
-
-
-.button.current {
-    background-color: #21F893;
-}
-
-
-
 </style>
 <body>
-<div id = "title"><h1>I want to believe</h1></div>
-<div id = "title-img"><img src="img/alien3.jpg"></div>
-<div id = "help" class = "box"><p><strong>Skrollaa alaspäin ▼</strong></p></div>
-<div id = "introduction">
+<div class = "title"><h1>I want to believe</h1></div>
+<div class = "title-img"><img src="img/alien3.jpg"></div>
+<div class = "help" class = "box"><p><strong>Skrollaa alaspäin ▼</strong></p></div>
+<div class = "introduction">
 <p><strong>Tiesitkö, että Suomessa havaitaan tunnistamattomia aluksia lähes joka kuukausi?</strong> Suomen Ufotutkijat pitävät yllä tietokantaa näistä havainnoista. Tähän visualisointiin on kerätty kirjatut havainnot suomalaisista ufokohtaamisesta.</p>
 
-<div id = "samerow">
-<div id = "numeronosto" class = "box"><p><strong><font size="30">918</font></strong> <br />ufohavaintoa</p></div>
-<div id = "numeronosto" class = "box"><p><strong><font size="30">441</font></strong> <br />tapahtumakuvaa</p></div>
-<div id = "numeronosto" class = "box"><p><strong><font size="30">279</font></strong> <br />paikkakuntaa</p></div>
+<div class = "samerow">
+<div class = "numeronosto" class = "box"><p><strong><font size="30">918</font></strong> <br />ufohavaintoa</p></div>
+<div class = "numeronosto" class = "box"><p><strong><font size="30">441</font></strong> <br />tapahtumakuvaa</p></div>
+<div class = "numeronosto" class = "box"><p><strong><font size="30">279</font></strong> <br />paikkakuntaa</p></div>
 </div>
 
-<div id = "samerow">
-<div id = "esim1"><h4>Havainto: 1346 (12.01.1986)</h4><p>"Kohde oli 4-5 metrinen pyöreä kiekko. Se säteili voimakasta lämpöä ja ilma väreili sen ympärillä voimakkaasti. Alhaalla oli neljä pallomaista uloketta ja sen keskellä oli suuri, pyöreän tumma aukko. Muistaakseni kiekosta tuli ohut valokiila, joka osui minua päähän. Pikkuhiljaa päätäni alkoi särkeä ja olin aivan puhekyvytön. Kosonen valitti samaa. Seuraavana päivänä tunsin itseni yliväsyneeksi ja silmiä aristi." <br /><a href="http://fufora.fi/ufodb/ufodata.php?u=1346&p=1" target="_blank">Lue lisää...</a></p><img src="img/1346__1.jpg"></div>
-<div id = "esim1"><h4>Havainto: 746 (31.10.1990)</h4><p>"Kohteen oltua paikallaan noin 3-4 minuuttia, yhdessä ikkunassa näkyi liikettä, ja ikkunan väri muuttui mattavihreästä harmaaksi. Jussi sai ajatuksen, että joku tuli ilmeisesti katsomaan häntä ikkunaan. Nyt Jussi alkoi tuntea lievää pelkoa ja paniikkia, etenkin kun muita ihmisiä ei näkynyt, eivätkä viereisellä sillalla ohiajaneet autoilijat pysähtyneet. Jussi jopa aivan jähmettyi paikalleen, eikä pystynyt enää liikkumaan tai huutamaan." <br /><a href="http://fufora.fi/ufodb/ufodata.php?u=746&p=1" target="_blank">Lue lisää...</a></p><img src="img/746__1.jpg"></div>
+<div class = "samerow">
+<div class = "esim1"><h4>Havainto: 1346 (12.01.1986)</h4><p>"Kohde oli 4-5 metrinen pyöreä kiekko. Se säteili voimakasta lämpöä ja ilma väreili sen ympärillä voimakkaasti. Alhaalla oli neljä pallomaista uloketta ja sen keskellä oli suuri, pyöreän tumma aukko. Muistaakseni kiekosta tuli ohut valokiila, joka osui minua päähän. Pikkuhiljaa päätäni alkoi särkeä ja olin aivan puhekyvytön. Kosonen valitti samaa. Seuraavana päivänä tunsin itseni yliväsyneeksi ja silmiä aristi." <br /><a href="http://fufora.fi/ufodb/ufodata.php?u=1346&p=1" target="_blank">Lue lisää...</a></p><img src="img/1346__1.jpg"></div>
+<div class = "esim1"><h4>Havainto: 746 (31.10.1990)</h4><p>"Kohteen oltua paikallaan noin 3-4 minuuttia, yhdessä ikkunassa näkyi liikettä, ja ikkunan väri muuttui mattavihreästä harmaaksi. Jussi sai ajatuksen, että joku tuli ilmeisesti katsomaan häntä ikkunaan. Nyt Jussi alkoi tuntea lievää pelkoa ja paniikkia, etenkin kun muita ihmisiä ei näkynyt, eivätkä viereisellä sillalla ohiajaneet autoilijat pysähtyneet. Jussi jopa aivan jähmettyi paikalleen, eikä pystynyt enää liikkumaan tai huutamaan." <br /><a href="http://fufora.fi/ufodb/ufodata.php?u=746&p=1" target="_blank">Lue lisää...</a></p><img src="img/746__1.jpg"></div>
 </div>
 
-<div id = "chart-wrapper">
-<h1>Havaintojen kokonaiskuva</h1>
-<p>Seuraava visualisointi sisältää kaikki 918 ufohavaintoa. Jokainen vuosi on yksi pallomuodostelma. Tuoreimmat havainnot ovat ylhäällä. Painikkeista voit filtteröidäa aineistoa.
+<div class = "chart-wrapper">
+<h1>Tutki ufohavaintoja</h1>
+<p>Filtteröi aineisto painikkeista. Kursorin viemällä pallojen päälle, saat lisätietoa havainnosta. Kaksoisklikkaamalla näet koko havainnon kuvauksen. Aineisto on järjestetty vuosittain siten, että ylhäällä on tuoreimmat havainnot.
+<p style="color: #21F893;">⚫ Kyllä-vastaukset</p>
+<p style="color: #BE3AF9;">⚫ Ei-vastaukset</p>
 </div>
-<div id = "samerow">
-<div class = "button noFilter current" dataval = "noFilter">Ei filteriä</div>
-<div class = "button scary" dataval = "scary">Pelottiko sinua?</div>
-<div class = "button stop" dataval = "stop">Pelottiko eläimiä?</div>
+<div class = "samerow">
+<div class = "button scary current" dataval = "scary">Pelottiko sinua?</div>
+<div class = "button stop" dataval = "stop">Pysähtyikö kohde?</div>
 <div class = "button light" dataval = "light">Loistiko kohde valoa?</div>
+<div class = "button ilmoitus" dataval = "ilmoitus">Ilmoititko lehtiin tai viranomaisille?</div>
+<div class = "button noFilter" dataval = "noFilter">Ei filteriä</div>
 </div>
-<div id = "chart"></div>
+<div id = "sections">
+<div class = "chart"></div>
+<script type="text/javascript" src="scripts/chart1.js"></script>
+</div>
+
+<div class = "samerow">
+<div class = "esim1"><h4>Havainto: 1029 (09.03.2014)</h4><p>"9-10.3.2014 välisenä yönä katsoin takapihalta outoa ilmiötä Järvenpäässä.Kolme palloa,väritykseltään oranssiin menevä,kolmion muodostelmassa lähestyi hyvin hitaasti Järvenpäähän päin Helsingin suunnasta.Mielestäni ne olivat aika korkealla,joten yrittänyt ottaa kännykällä kuvaa." <br /><a href="http://fufora.fi/ufodb/ufodata.php?u=1029&p=1" target="_blank">Lue lisää...</a></p></div>
+<div class = "esim1"><h4>Havainto: 589 (05.01.2012)</h4><p>"Olimme juuri menossa mieheni kanssa nukkumaan eli noin puoli yksi yöllä ja olimme jo sammuttaneet valot kun yhtäkkiä makuuhuoneen ikkunan ulkopuolella alkoi välähtelemään jokin sininen kirkas valo. mieheni avasi säleverhot ja katsoi ulos niin aivan kattomme yläpuolella taivaalta välkehti sininen kirkas valo jonka itsekin näin. Pelästyimme todella, mutta uutisissa ei näy vielä ainakaan olevan mitään.." <br /><a href="http://fufora.fi/ufodb/ufodata.php?u=589&p=1" target="_blank">Lue lisää...</a></p>
+</div>
+</div>
+
+<div class = "chart-wrapper">
+<h1>Havainnot kuukausittian</h1>
+<p>Filtteröi aineisto painikkeista. Kursorin viemällä pallojen päälle, saat lisätietoa havainnosta. Kaksoisklikkaamalla näet koko havainnon kuvauksen. Aineisto on järjestetty vuosittain siten, että ylhäällä on tuoreimmat havainnot.</p>
+<p style="color: #21F893;">⚫ Kirkas päivänvalo</p>
+<p style="color: #059451;">⚫ Auringonlasku tai -nousu</p>
+<p style="color: #BE3AF9;">⚫ Hämärä</p>
+<p style="color: #7505a8;">⚫ Pimeä</p>
+</div>
+
+<div class = "chart2"></div>
+<script type="text/javascript" src="scripts/chart2.js"></script>
+</div>
 
 </body>
 
 <script>
 
-var choice = "noFilter";
-
-var noColor = "#BE3AF9"
-var yesColor = "#21F893"
-var maybeColor = "#15E7FC"
-
-var datasee;
-var forceStrength = 1;
-var parseDate = d3.timeParse("%Y-%m-%d");
-
-// Margins
-//
-var margin = {top: 50, right: 70, bottom: 50, left: 50},
-    width = 800 - margin.left - margin.right,
-    height = 2000 - margin.top - margin.bottom;
-
-var svg = d3.select("#chart")
-	.append("svg")
-	.attr("height", height)
-	.attr("width", width)
-	.append("g")
-	.attr("transform", "translate(0,0)")
-
-var x = d3.scaleLinear()
-    .rangeRound([100, width-margin.right-100])
-
-var y = d3.scaleLinear()
-    .rangeRound([height, 50])
-
-// Define the div for the tooltip
-var div = d3.select("body").append("div")	
-    .attr("class", "tooltip")				
-    .style("opacity", 0);
-
-var forceX = d3.forceX(function(d) {
-	return x(d.placingX)
-	}).strength(forceStrength);
-
-var forceY = d3.forceY(function(d) {
-	if (d.year > 1989) {
-		return y(d.placingY) * 2;	
-	}
-	else {
-		return height*0.65;
-	}
-	}).strength(forceStrength);
-
-
-var simulation = d3.forceSimulation()
-	.force("x", forceX)
-	.force("y", forceY)
-	.force("collide", d3.forceCollide(3));
-
-
-d3.queue()
-	.defer(d3.tsv, "data/ufotietokanta21122016.tsv")
-	.await(ready)
-
-
-function ready (error, data) {
-
-	data.forEach(function(d) { 
-		d.pvm = parseDate(d["Päivämäärä"]),
-		d.paikka = d["Kunta tai kaupunki"],
-		d.year = d.pvm.getFullYear(),
-		d.month = d.pvm.getMonth(),
-		d.placingX = 2016 % d.year % 4;
-		d.placingY = 504 - (Math.ceil(d.year / 4))
-	})
-
-	console.log(data)
-
-	datasee = data;
-
-	y.domain([25, 0]);
-	x.domain([0, 3]);
-
-
-	var fillColor = function(d) {
-		if(choice === "noFilter") {
-			return yesColor;
-		} else if (choice === "scary") {
-			if(d["Aiheuttiko kohde pelkoa"] == "ei") {
-				return noColor
-			} else {
-				return yesColor
-			}
-		} else if (choice == "stop") {
-			if(d["Pysähtyikö kohde"] == "ei") {
-				return noColor
-			} else {
-				return yesColor
-			}
-		} else {
-			if(d["Loistiko kohde valoa"] == "ei") {
-				return noColor
-			} else {
-				return yesColor
-			}
-		}
-	}
-
-
-	var circles = svg.selectAll(".havainnot")
-		.data(data)
-		.enter().append("circle")
-		.attr("class", "havainnot")
-		.attr("r", 2)
-		.attr("fill", fillColor)
-		 .on("mouseover", function(d) {		
-            div.transition()		
-                .duration(200)		
-                .style("opacity", .99);		
-            div	.html( "<strong> Kunta tai kaupunki: </strong>"+ d["Kunta tai kaupunki"] + "<br /><strong>Päivämäärä:</strong> " + d["Päivämäärä"])	
-                .style("left", (d3.event.pageX) + "px")		
-                .style("top", (d3.event.pageY - 28) + "px");	
-            })					
-        .on("mouseout", function(d) {		
-            div.transition()		
-                .duration(500)		
-                .style("opacity", 0);	
-        })
-        .on("dblclick", dblclick);
-
-
-	simulation.nodes(data)
-		.on("tick", ticked)
-
-	circles.on("click", function(d) {
-		console.log(d);
-	})
-
-
-	//Toggle buttons for the visualization
-	d3.selectAll(".button")
-		.on("click", function() {
-			if (d3.select(this).attr("dataval") == "noFilter") {
-				d3.select(".noFilter").classed("current", true);
-				d3.select(".scary").classed("current", false);
-				d3.select(".stop").classed("current", false);
-				d3.select(".light").classed("current", false);
-				choice = "noFilter"
-			} else if (d3.select(this).attr("dataval") == "scary") {
-				d3.select(".noFilter").classed("current", false);
-				d3.select(".scary").classed("current", true);
-				d3.select(".stop").classed("current", false);
-				d3.select(".light").classed("current", false);
-				choice = "scary"
-			} else if (d3.select(this).attr("dataval") == "stop") {
-				d3.select(".noFilter").classed("current", false);
-				d3.select(".scary").classed("current", false);
-				d3.select(".stop").classed("current", true);
-				d3.select(".light").classed("current", false);
-				choice = "stop"
-			} else {
-				d3.select(".noFilter").classed("current", false);
-				d3.select(".scary").classed("current", false);
-				d3.select(".stop").classed("current", false);
-				d3.select(".light").classed("current", true);
-				choice = "light"
-			}
-					updateColors();
-		}
-		);
-
-
-	function updateColors() {
-		circles.attr("fill", fillColor)
-	}
-
-
-
-	function ticked() {
-		circles
-			.attr("cx", function(d) {
-				return d.x;
-			})
-			.attr("cy", function(d) {
-				return d.y;
-			})
-	}
-
-	function dblclick(a){
-    	window.open(a.URL, '_blank');
- 	}
-
-	}
 </script>
